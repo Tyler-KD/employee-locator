@@ -5,6 +5,19 @@ const express = require('express');
 const inquirer = require('inquirer');
 // Import mysql
 const mysql = require('mysql2');
+// Imports file system
+const fs = require('fs');
+// Imports the path module
+const path = require('path');
+// _dirname is an environment variable that tells the absolute path of the directory containing the currently executing file
+// Joins 2 path-segments
+const queriesPath = path.join(__dirname,'db', 'queries.sql');
+// Calls the readFileSync () method to read queriesPath
+const queriesContent = fs.readFileSync(queriesPath, 'utf-8');
+// Reads the file content as a string and split it into separate queries based on the delimiter (;)
+// Creates array for each query
+const queries = queriesContent.split(';').map(query => query.trim());
+
 // Imports console.table
 const cTable = require('console.table');
 
@@ -85,12 +98,17 @@ function init() {
 
 // View all departments
 function view_allDepartments() {
-    db.query("SELECT * from department", function (err, results) {
+    db.query(queries[0], function (err, queries) {
         // The console.table() static method displays tabular data as a table
-        console.table(results);
+        console.table(queries);
         // Return to main menu
         init();
     })
+};
+
+// View all roles
+function view_AllRoles() {
+
 };
 
 // Call to initialize the app
