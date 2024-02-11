@@ -8,6 +8,7 @@ USE employeeLocator_db;
 
 -- Creates the table "department" within employeeLocator_db
 CREATE TABLE department (
+    -- Creates a numeric column called "id"
     -- INT NOT NULL means data is required
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     -- Makes a string column called "name" which cannot contain null
