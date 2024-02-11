@@ -14,6 +14,18 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Connect to database
+const db = mysql.createConnection(
+    {
+        host: 'localhost',
+        // MySQL username
+        user: 'root',
+        password: 'Y<k45OiRE6qm',
+        database: 'employeeLocator_db'
+    }
+)
+
+// Query database
 
 
 
