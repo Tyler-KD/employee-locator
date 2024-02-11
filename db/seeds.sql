@@ -3,7 +3,7 @@ USE employeeLocator_db;
 
 -- Insert multiple department names
 -- Insert rows into department table
-INSERT INTO department(name)
+INSERT INTO departments(department)
 Values ("Sales"),
     ("Engineering"),
     ("Finance"),

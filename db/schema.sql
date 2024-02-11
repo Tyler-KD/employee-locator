@@ -7,13 +7,13 @@ CREATE DATABASE employeeLocator_db;
 USE employeeLocator_db;
 
 -- Creates the table "department" within employeeLocator_db
-CREATE TABLE department (
+CREATE TABLE departments (
     -- Creates a numeric column called "id"
     -- INT NOT NULL means data is required
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     -- Makes a string column called "name" which cannot contain null
     -- Limit string to 30 characters
-    name VARCHAR(30) NOT NULL
+    department VARCHAR(30) NOT NULL
 );
 
 -- Creates the table "role" within employeeLocator_db
@@ -23,7 +23,7 @@ CREATE TABLE role (
     salary DECIMAL,
     department_id INT,
     FOREIGN KEY (department_id)
-    REFERENCES department(id)
+    REFERENCES departments(id)
     -- If department gets deleted, then that id will be set to null
     ON DELETE SET NULL
 );

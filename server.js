@@ -100,6 +100,7 @@ function init() {
 function view_allDepartments() {
     db.query(queries[0], function (err, queries) {
         // The console.table() static method displays tabular data as a table
+        // Outputs the content of the queries file
         console.table(queries);
         // Return to main menu
         init();
@@ -108,7 +109,18 @@ function view_allDepartments() {
 
 // View all roles
 function view_AllRoles() {
+    db.query(queries[1], function (err, queries) {
+        console.table(queries);
+        init();
+    })
+};
 
+// View all employees
+function view_Employees() {
+    db.query(queries[2], function (err, queries) {
+        console.table(queries);
+        init();
+    })
 };
 
 // Call to initialize the app
