@@ -16,3 +16,7 @@ JOIN departments on role.department_id = departments.id
 LEFT JOIN employee emp_2
 -- Selects all managers that the employees report to
 ON emp_1.manager_id = emp_2.id;
+
+-- 
+INSERT INTO departments 
+WHERE id = ?, insertedRow

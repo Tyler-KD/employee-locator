@@ -117,13 +117,33 @@ function view_AllRoles() {
 
 // View all employees
 function view_Employees() {
-    console.log(queries[2])
+    // console.log(queries[2])
     db.query(queries[2], function (err, queries) {
-        if (err) console.log(err)
-        console.log(queries)
+        // if (err) console.log(err)
+        // console.log(queries)
         console.table(queries);
         init();
     })
+};
+
+// Add Department
+function add_Department() {
+    inquirer.prompt ([
+        {
+            type: "input",
+            message: "What is the name of the department?",
+            name: "department"
+        }
+    ])
+    .then(async (answer) => {
+        // db.query("INSERT INTO departments SET ?", answer, function (err, results) {
+        //     if (err) console.log(err);
+        //     init();
+        // })
+        var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer);
+        console.log(DepartmentAdd);
+    })
+
 };
 
 // Call to initialize the app
