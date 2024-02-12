@@ -154,13 +154,35 @@ function add_Role() {
             message: "What is the name of the role?",
             name: "role_Name"
 
-        },
+        }
+    ])
+    .then(async (answer) => {
+        // db.query("INSERT INTO departments SET ?", answer, function (err, results) {
+        //     if (err) console.log(err);
+        //     init();
+        // })
+        var RoleAdd = await db.promise().query("INSERT INTO role.name SET ?", answer); 
+        console.log(`${answer} added to database`);
+        console.log(RoleAdd);
+    })
+    ([
         {
             type: "input",
             message: "What is the salary of the role?",
             name: "role_Salary",
 
-        },
+        }
+    ])
+    .then(async (answer) => {
+        // db.query("INSERT INTO departments SET ?", answer, function (err, results) {
+        //     if (err) console.log(err);
+        //     init();
+        // })
+        var SalaryAdd = await db.promise().query("INSERT INTO role.salary SET ?", answer); 
+        console.log(`${answer} added to database`);
+        console.log(SalaryAdd);
+    })
+    ([
         {
             type: "list",
             message: "Which department does the role belong to?",
@@ -169,10 +191,17 @@ function add_Role() {
 
             ]
 
-        },        
+        },
     ])
     .then(async (answer) => {
-
+        // db.query("INSERT INTO departments SET ?", answer, function (err, results) {
+        //     if (err) console.log(err);
+        //     init();
+        // })
+        var RoleDepartmentAdd = await db.promise().query("INSERT INTO role.department_id SET ?", answer); 
+        console.log(`${answer} added to database`);
+        console.log(RoleDepartmentAdd);
+        init();
     })
 };
 
