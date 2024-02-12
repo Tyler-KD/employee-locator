@@ -117,7 +117,10 @@ function view_AllRoles() {
 
 // View all employees
 function view_Employees() {
+    console.log(queries[2])
     db.query(queries[2], function (err, queries) {
+        if (err) console.log(err)
+        console.log(queries)
         console.table(queries);
         init();
     })

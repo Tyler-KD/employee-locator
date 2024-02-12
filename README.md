@@ -51,6 +51,10 @@ N/A
 
 [fs.readFileSynce() Method](https://www.geeksforgeeks.org/node-js-fs-readfilesync-method/)
 
+[SQL LEFT JOIN](https://www.w3schools.com/sql/sql_join_left.asp)
+
+[MySQL CONCAT() Function](https://www.w3schools.com/sql/func_mysql_concat.asp)
+
 []()
 
 
