@@ -140,10 +140,40 @@ function add_Department() {
         //     if (err) console.log(err);
         //     init();
         // })
-        var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer);
+        var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer); 
+        console.log(`${answer} added to database`);
         console.log(DepartmentAdd);
+        init();
     })
+};
 
+function add_Role() {
+    inquirer.prompt ([
+        {
+            type: "input",
+            message: "What is the name of the role?",
+            name: "role_Name"
+
+        },
+        {
+            type: "input",
+            message: "What is the salary of the role?",
+            name: "role_Salary",
+
+        },
+        {
+            type: "list",
+            message: "Which department does the role belong to?",
+            name: "role_Department",
+            choices: [
+
+            ]
+
+        },        
+    ])
+    .then(async (answer) => {
+
+    })
 };
 
 // Call to initialize the app
