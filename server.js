@@ -194,19 +194,20 @@ function add_Employee() {
     const query = "SELECT * FROM role";
     db.query(query, (err, res) => {
         if (err) throw err;
-        // Choices for department are mapped with the id and department name into an array for user
+        // Choices for role are mapped with the id and role name into an array for user
         const Array_Role = res.map((role) => ({
             value: role.id,
             name: `${role.title}`
         }));
         const query = "SELECT * FROM employee";
+        // const query = "SELECT id AS value, CONCAT(first_name, '', last_name) AS name FROM employee";
         db.query(query, (err, res) => {
             if (err) throw err;
-            const Array_Manager = res.map((employee) => {
+            const Array_Manager = res.map((employee) => ({
                 value: employee.id,
                 name: `${employee.manager_id}`
-            })
-        })
+            }))
+        
         inquirer.prompt ([
             {
                 type: "input",
@@ -231,7 +232,17 @@ function add_Employee() {
                 choices: Array_Manager,
             },
         ])
-})
+        .then (async (answer) => {
+            var EmployeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
+               first_name: answer.role_firstName,
+               last_name: answer.role_lastName,
+               role_id: answer.employee_role,
+               manager_id: answer.employee_manager,
+            });
+            console.log('Employee added to database');
+            init();
+        })
+    })});
 }
 
 // Call to initialize the app

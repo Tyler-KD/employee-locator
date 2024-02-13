@@ -18,5 +18,5 @@ LEFT JOIN employee emp_2
 ON emp_1.manager_id = emp_2.id;
 
 -- 
-INSERT INTO departments 
-WHERE id = ?, insertedRow
+-- INSERT INTO departments 
+-- WHERE id = ?, insertedRow
