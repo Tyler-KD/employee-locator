@@ -149,7 +149,7 @@ function add_Role() {
     db.query(query, (err, res) => {
         if (err) throw err;
         // Choices for department are mapped with the id and department name into an array for user
-        const Array_Department = res.map((departments) => ({
+        const arrayDepartment = res.map((departments) => ({
             value: departments.id,
             name: `${departments.department}`
         }));
@@ -171,12 +171,12 @@ function add_Role() {
                 type: "list",
                 message: "Which department does the role belong to?",
                 name: "department",
-                choices: Array_Department,
+                choices: arrayDepartment,
             },
         ])
         .then(async (answer) => {
             // query for adding a role with title, salary, and department name into table role
-            var RoleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
+            var roleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
                 title: answer.role_title,
                 salary: answer.role_salary,
                 department_id: answer.department,
@@ -209,10 +209,11 @@ function add_Employee() {
                 name: `${employee.first_name} ${employee.last_name}`
 
             }));
-            const arrayManager.push{
+            // Push "None" as a choice into arrayManager
+            arrayManager.push({
                 name: "None", 
                 value: undefined
-            };
+        });
         // inquirer prompts for taking in first name, last name, role, and manager for employee
         inquirer.prompt ([
             {
@@ -240,7 +241,7 @@ function add_Employee() {
         ])
         .then (async (answer) => {
             // query for adding an employee with first name, last name, role, and manager into table employee
-            var EmployeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
+            var employeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
                first_name: answer.role_firstName,
                last_name: answer.role_lastName,
                role_id: answer.employee_role,
@@ -249,8 +250,8 @@ function add_Employee() {
             console.log('Employee added to database');
             init();
         })
-    })});
-}
+    })})
+};
 
 
 
