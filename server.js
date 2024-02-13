@@ -87,6 +87,7 @@ function init() {
                     break;
                 case "Update Employee Role":
                     update_employeeRole();
+                    break;
                 case "Quit":
                     // Ends connection to database
                     db.end();
@@ -283,14 +284,14 @@ function update_employeeRole() {
             {
                 type: "list",
                 message: "Which role do you want to assign the selected employee?",
-                name: "update_EmployeeRole",
+                name: "update_RoleForEmployee",
                 choices: arrayUpdateRole,
             },
         ])
         .then (async (answer) => {
             var employeeUpdate = await db.promise().query("Update employee SET ?", {
-                employee_id: answer.update_Employee,
-                role_id: answer.update_employeeRole,
+                id: answer.update_Employee,
+                role_id: answer.update_RoleForEmployee,
             });
             console.log("Updated employee's role");
             init();
