@@ -195,7 +195,7 @@ function add_Employee() {
     db.query(query, (err, res) => {
         if (err) throw err;
         // Choices for role are mapped with the id and role name into an array for user
-        const Array_Role = res.map((role) => ({
+        const arrayRole = res.map((role) => ({
             value: role.id,
             name: `${role.title}`
         }));
@@ -203,11 +203,16 @@ function add_Employee() {
         db.query(query, (err, res) => {
             if (err) throw err;
             // Choices for manager are mapped with the id, first name, and last name into an array for user
-            const Array_Manager = res.map((employee) => ({
+            const arrayManager = res.map((employee) => ({
                 value: employee.id,
                 // first name and last name are split into 2 template literals for displaying full name to user
                 name: `${employee.first_name} ${employee.last_name}`
+
             }));
+            const arrayManager.push{
+                name: "None", 
+                value: undefined
+            };
         // inquirer prompts for taking in first name, last name, role, and manager for employee
         inquirer.prompt ([
             {
@@ -224,13 +229,13 @@ function add_Employee() {
                 type: "list",
                 message: "What is the employee's role?",
                 name: "employee_role",
-                choices: Array_Role,
+                choices: arrayRole,
             },
             {
                 type: "list",
                 message: "Who is the employee's manager?",
                 name: "employee_manager",
-                choices: Array_Manager,
+                choices: arrayManager,
             },
         ])
         .then (async (answer) => {
@@ -246,6 +251,8 @@ function add_Employee() {
         })
     })});
 }
+
+
 
 // Call to initialize the app
 init();
