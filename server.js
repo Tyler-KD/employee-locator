@@ -200,14 +200,15 @@ function add_Employee() {
             name: `${role.title}`
         }));
         const query = "SELECT * FROM employee";
-        // const query = "SELECT id AS value, CONCAT(first_name, '', last_name) AS name FROM employee";
         db.query(query, (err, res) => {
             if (err) throw err;
+            // Choices for manager are mapped with the id, first name, and last name into an array for user
             const Array_Manager = res.map((employee) => ({
                 value: employee.id,
-                name: `${employee.manager_id}`
-            }))
-        
+                // first name and last name are split into 2 template literals for displaying full name to user
+                name: `${employee.first_name} ${employee.last_name}`
+            }));
+        // inquirer prompts for taking in first name, last name, role, and manager for employee
         inquirer.prompt ([
             {
                 type: "input",
@@ -233,6 +234,7 @@ function add_Employee() {
             },
         ])
         .then (async (answer) => {
+            // query for adding an employee with first name, last name, role, and manager into table employee
             var EmployeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
                first_name: answer.role_firstName,
                last_name: answer.role_lastName,
