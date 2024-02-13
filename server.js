@@ -136,10 +136,6 @@ function add_Department() {
         }
     ])
     .then(async (answer) => {
-        // db.query("INSERT INTO departments SET ?", answer, function (err, results) {
-        //     if (err) console.log(err);
-        //     init();
-        // })
         var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer); 
         console.log("Department added to database");
         // console.log(DepartmentAdd);
@@ -147,44 +143,96 @@ function add_Department() {
     })
 };
 
+// Add a Role
 function add_Role() {
     const query = "SELECT * FROM departments";
     db.query(query, (err, res) => {
         if (err) throw err;
-        const Array_Department = res.map((departmentnts) => ({
+        // Choices for department are mapped with the id and department name into an array for user
+        const Array_Department = res.map((departments) => ({
             value: departments.id,
             name: `${departments.department}`
         }));
+        // inquirer prompt for taking in title, salary, and department for role
         inquirer.prompt ([
             {
                 type: "input",
                 message: "What is the name of the role?",
-                name: "role_Name"
+                name: "role_title"
     
             },
             {
                 type: "input",
                 message: "What is the salary of the role?",
-                name: "role_Salary",
+                name: "role_salary",
     
             },
             {
                 type: "list",
                 message: "Which department does the role belong to?",
-                name: "role_Department",
+                name: "department",
                 choices: Array_Department,
             },
         ])
         .then(async (answer) => {
-            var RoleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", answer); 
-
+            // query for adding a role with title, salary, and department name into table role
+            var RoleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
+                title: answer.role_title,
+                salary: answer.role_salary,
+                department_id: answer.department,
+            }); 
             console.log(`Role added to database`);
-            console.log(RoleDepartmentAdd);
+            // console.log(RoleDepartmentAdd);
             init();
         })
     })
 
 };
+
+// Add an Employee
+function add_Employee() {
+    const query = "SELECT * FROM role";
+    db.query(query, (err, res) => {
+        if (err) throw err;
+        // Choices for department are mapped with the id and department name into an array for user
+        const Array_Role = res.map((role) => ({
+            value: role.id,
+            name: `${role.title}`
+        }));
+        const query = "SELECT * FROM employee";
+        db.query(query, (err, res) => {
+            if (err) throw err;
+            const Array_Manager = res.map((employee) => {
+                value: employee.id,
+                name: `${employee.manager_id}`
+            })
+        })
+        inquirer.prompt ([
+            {
+                type: "input",
+                message: "What is the employee's first name?",
+                name: "role_firstName"
+            },
+            {
+                type: "input",
+                message: "What is the employee's last name?",
+                name: "role_lastName"
+            },
+            {
+                type: "list",
+                message: "What is the employee's role?",
+                name: "employee_role",
+                choices: Array_Role,
+            },
+            {
+                type: "list",
+                message: "Who is the employee's manager?",
+                name: "employee_manager",
+                choices: Array_Manager,
+            },
+        ])
+})
+}
 
 // Call to initialize the app
 init();
