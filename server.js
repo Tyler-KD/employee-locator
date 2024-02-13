@@ -253,7 +253,50 @@ function add_Employee() {
     })})
 };
 
+// Update an employee role
+function update_employeeRole() {
+    const query = "SELECT * FROM employee";
+    db.query(query, (err, res) => {
+        if (err) throw err;
+        // Choices for employee update are mapped with the id, first name, and last name into an array for user
+        const arrayUpdateEmployee = res.map((employee) => ({
+            value: employee.id,
+            // first name and last name are split into 2 template literals for displaying full name to user
+            name: `${employee.first_name} ${employee.last_name}`
 
+        }));
+        const query = "SELECT * FROM role";
+        db.query(query, (err, res) => {
+            if (err) throw err;
+            // Choices for role update are mapped with the id and role name into an array for user
+            const arrayUpdateRole = res.map((role) => ({
+                value: role.id,
+                name: `${role.title}`
+            }));
+        inquirer.prompt ([
+            {
+                type: "list",
+                message: "Which employee's role do you want to update?",
+                name: "update_Employee",
+                choices: arrayUpdateEmployee,
+            },
+            {
+                type: "list",
+                message: "Which role do you want to assign the selected employee?",
+                name: "update_EmployeeRole",
+                choices: arrayUpdateRole,
+            },
+        ])
+        .then (async (answer) => {
+            var employeeUpdate = await db.promise().query("Update employee SET ?", {
+                employee_id: answer.update_Employee,
+                role_id: answer.update_employeeRole,
+            });
+            console.log("Updated employee's role");
+            init();
+        })
+    })})
+};
 
 // Call to initialize the app
 init();
