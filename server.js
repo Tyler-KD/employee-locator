@@ -53,6 +53,7 @@ function init() {
             choices: [
                 "View All Departments",
                 "Add Department",
+                "Delete Department",
                 "View All Roles",
                 "Add a Role",
                 "View All Employees",
@@ -78,6 +79,9 @@ function init() {
                     break;
                 case "Add Department":
                     add_Department();
+                    break;
+                case "Delete Department":
+                    delete_Department();
                     break;
                 case "Add Employee":
                     add_Employee();
@@ -142,6 +146,34 @@ function add_Department() {
         console.log("Department added to database");
         // console.log(DepartmentAdd);
         init();
+    })
+};
+
+// Delete Department
+function delete_Department() {
+    const query = "SELECT * FROM departments";
+    db.query(query, (err, res) => {
+        if (err) throw err;
+        // Choices for department are mapped with the id and department name into an array for user
+        const arrayDeleteDepartment = res.map((departments) => ({
+            value: departments.id,
+            name: `${departments.department}`
+        }));
+        inquirer.prompt ([
+            {
+                type: "list",
+                message: "Which department would you like to delete?",
+                name: "delete_Department",
+                choices: arrayDeleteDepartment,
+            },            
+        ])
+        .then(async (answer) => {
+            var deleteDepartment = await db.promise().query("DELETE FROM departments WHERE id = ?", [
+                answer.delete_Department,
+            ]);
+            console.log("Department deleted from database");
+            init();
+        })
     })
 };
 
@@ -293,7 +325,7 @@ function update_employeeRole() {
             // query for updating a role for an employee into table: employee.
             // The UPDATE statement is used to modify the existing records in a table.
             // The WHERE clause is used to extract only those records that fulfill a specified condition.
-            var employeeUpdate = await db.promise().query("Update employee SET role_id = ? WHERE id = ?", [
+            var employeeUpdate = await db.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [
                 answer.update_RoleForEmployee,
                 answer.update_Employee,                
                 ]);
