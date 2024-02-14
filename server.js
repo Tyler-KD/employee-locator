@@ -58,6 +58,7 @@ function init() {
                 "Add a Role",
                 "Delete a Role",
                 "View All Employees",
+                "View All Employees by Manager",
                 "Add Employee",
                 "Delete Employee",
                 "Update Employee Role",
@@ -79,6 +80,9 @@ function init() {
                     break;
                 case "View All Employees":
                     view_Employees();
+                    break;
+                case "View All Emplyees by Manager":
+                    view_EmployeesByManager();
                     break;
                 case "Add Department":
                     add_Department();
@@ -138,6 +142,14 @@ function view_Employees() {
     db.query(queries[2], function (err, queries) {
         // if (err) console.log(err)
         // console.log(queries)
+        console.table(queries);
+        init();
+    })
+};
+
+// View all employees by manager
+function view_EmployeesByManager() {
+    db.query(queries[3], function (err, queries) {
         console.table(queries);
         init();
     })

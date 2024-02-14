@@ -16,3 +16,8 @@ JOIN departments on role.department_id = departments.id
 LEFT JOIN employee emp_2
 -- Selects all managers that the employees report to
 ON emp_1.manager_id = emp_2.id;
+
+SELECT CONCAT(emp_1.first_name, "", emp_1.last_name) AS manager, CONCAT(emp_2.first_name, "", emp_2.last_name) AS employee
+FROM employee emp_1
+LEFT JOIN employee emp_2
+ON emp_2.id = emp_1.manager_id;
