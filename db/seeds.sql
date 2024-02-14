@@ -4,18 +4,19 @@ USE employeeLocator_db;
 -- Insert multiple department names
 -- Insert rows into department table
 INSERT INTO departments(department)
-Values ("Sales"),
-    ("Engineering"),
-    ("Finance"),
-    ("Legal"),
-    ("System Testing"),
-    ("Assembly"),
-    ("Education"),
-    ("Entertainment");
+Values  ("Sales"),
+        ("Engineering"),
+        ("Finance"),
+        ("Legal"),
+        ("System Testing"),
+        ("Assembly"),
+        ("Education"),
+        ("Entertainment"),
+        ("Music");
 
 -- Insert rows into role table
 INSERT INTO role(title, salary, department_id)
-VALUES ("Sales Lead", 100000, 1),
+VALUES  ("Sales Lead", 100000, 1),
         ("Salesperson", 80000, 1),
         ("Lead Engineer", 150000, 2),
         ("Software Engineer", 120000, 2),
@@ -23,24 +24,25 @@ VALUES ("Sales Lead", 100000, 1),
         ("Accountant", 125000, 3),
         ("Legal Team Lead", 250000, 4),
         ("Lawyer", 190000, 4),
-        ("Owner", 1000000000, 2),
-        ("Nuclear Power Plant Operator", 80000, 1),
-        ("Principal", 130000, 6),
-        ("Superintendent", 200000, 6),
-        ("Teacher", 60000, 6),
-        ("TV Show Host", 140000, 7),
-        ("Personal Assistant", 100000, 2);
+        ("Owner", 1000000000, 3),
+        ("Nuclear Power Plant Operator", 80000, 2),
+        ("Principal", 130000, 7),
+        ("Superintendent", 200000, 7),
+        ("Teacher", 60000, 7),
+        ("TV Show Host", 140000, 8),
+        ("Personal Assistant", 100000, 3),
+        ("Jazz Player", 90000, 9);
 
 -- Insert rows into employee table
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-Values ("Montgomery", "Burns", 8, NULL),
-        ("Homer", "Simpson", 2, 1),
-        ("Lisa", "Simpson", 6, NULL),
-        ("Seymour", "Skinner", 10, 5),
-        ("Gary", "Chalmers", 11, NULL),
-        ("Edna", "Krabappel", 12, 4),
-        ("Krusty", "theClown", 13, NULL),
-        ("Waylon", "Smithers", 14, 1);
+Values  ("Montgomery", "Burns", 9, NULL),
+        ("Homer", "Simpson", 10, 1),
+        ("Lisa", "Simpson", 16, NULL),        
+        ("Gary", "Chalmers", 12, NULL),
+        ("Seymour", "Skinner", 11, 4),
+        ("Edna", "Krabappel", 13, 5),
+        ("Krusty", "the Clown", 14, NULL),
+        ("Waylon", "Smithers", 15, 1);
 
 -- Updates rows where only manager_id is available
 -- UPDATE employee SET manager_id = 1 where id = 2;

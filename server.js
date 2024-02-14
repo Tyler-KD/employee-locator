@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 // _dirname is an environment variable that tells the absolute path of the directory containing the currently executing file
 // Joins 2 path-segments
-const queriesPath = path.join(__dirname,'db', 'queries.sql');
+const queriesPath = path.join(__dirname, 'db', 'queries.sql');
 // Calls the readFileSync () method to read queriesPath
 const queriesContent = fs.readFileSync(queriesPath, 'utf-8');
 // Reads the file content as a string and split it into separate queries based on the delimiter (;)
@@ -61,6 +61,7 @@ function init() {
                 "Add Employee",
                 "Delete Employee",
                 "Update Employee Role",
+                "Update Employee Managers",
                 "Quit",
             ]
         }
@@ -99,6 +100,9 @@ function init() {
                     break;
                 case "Update Employee Role":
                     update_employeeRole();
+                    break;
+                case "Update Employee Managers":
+                    update_employeeManagers();
                     break;
                 case "Quit":
                     // Ends connection to database
@@ -141,20 +145,20 @@ function view_Employees() {
 
 // Add Department
 function add_Department() {
-    inquirer.prompt ([
+    inquirer.prompt([
         {
             type: "input",
             message: "What is the name of the department?",
             name: "department"
         }
     ])
-    .then(async (answer) => {
-        // INSERT INTO statement is used to insert new records in a table
-        var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer); 
-        console.log("Department added to database");
-        // console.log(DepartmentAdd);
-        init();
-    })
+        .then(async (answer) => {
+            // INSERT INTO statement is used to insert new records in a table
+            var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer);
+            console.log("Department added to database");
+            // console.log(DepartmentAdd);
+            init();
+        })
 };
 
 // Delete Department
@@ -166,26 +170,26 @@ function delete_Department() {
         const arrayDeleteDepartment = res.map((departments) => ({
             value: departments.id,
             name: `${departments.department}`
-        }));        
-        inquirer.prompt ([
+        }));
+        inquirer.prompt([
             {
                 type: "list",
                 message: "Which department would you like to delete?",
                 name: "delete_Department",
                 choices: arrayDeleteDepartment,
-            },            
+            },
         ])
-        .then(async (answer) => {
-            // query for deleting a department from table: departments.
-            // The DELETE statement is used to delete existing records in a table.
-            // The WHERE clause specifies which records should be deleted.
-            // If the WHERE clause is omitted, all records in the table will be deleted.
-            var deleteDepartment = await db.promise().query("DELETE FROM departments WHERE id = ?", [
-                answer.delete_Department,
-            ]);
-            console.log("Department deleted from database");
-            init();
-        })
+            .then(async (answer) => {
+                // query for deleting a department from table: departments.
+                // The DELETE statement is used to delete existing records in a table.
+                // The WHERE clause specifies which records should be deleted.
+                // If the WHERE clause is omitted, all records in the table will be deleted.
+                var deleteDepartment = await db.promise().query("DELETE FROM departments WHERE id = ?", [
+                    answer.delete_Department,
+                ]);
+                console.log("Department deleted from database");
+                init();
+            })
     })
 };
 
@@ -200,18 +204,18 @@ function add_Role() {
             name: `${departments.department}`
         }));
         // inquirer prompt for taking in title, salary, and department for role
-        inquirer.prompt ([
+        inquirer.prompt([
             {
                 type: "input",
                 message: "What is the name of the role?",
                 name: "role_title"
-    
+
             },
             {
                 type: "input",
                 message: "What is the salary of the role?",
                 name: "role_salary",
-    
+
             },
             {
                 type: "list",
@@ -220,17 +224,17 @@ function add_Role() {
                 choices: arrayDepartment,
             },
         ])
-        .then(async (answer) => {
-            // query for adding a role with title, salary, and department name into table: role
-            var roleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
-                title: answer.role_title,
-                salary: answer.role_salary,
-                department_id: answer.department,
-            }); 
-            console.log(`Role added to database`);
-            // console.log(RoleDepartmentAdd);
-            init();
-        })
+            .then(async (answer) => {
+                // query for adding a role with title, salary, and department name into table: role
+                var roleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
+                    title: answer.role_title,
+                    salary: answer.role_salary,
+                    department_id: answer.department,
+                });
+                console.log(`Role added to database`);
+                // console.log(RoleDepartmentAdd);
+                init();
+            })
     })
 
 };
@@ -244,7 +248,7 @@ function delete_Role() {
             value: role.id,
             name: `${role.title}`,
         }));
-        inquirer.prompt ([
+        inquirer.prompt([
             {
                 type: "list",
                 message: "Which role would you like to delete?",
@@ -252,15 +256,15 @@ function delete_Role() {
                 choices: arrayDeleteRole,
             },
         ])
-        .then(async (answer) => {
-            // query for deleting a role from table: role
-            // If the WHERE clause is omitted, all records in the table will be deleted.
-            var deleteRole = await db.promise().query("DELETE FROM role WHERE id = ?", [
-                answer.delete_Role,
-            ]);
-            console.log("Role was deleted from database");
-            init();
-        })
+            .then(async (answer) => {
+                // query for deleting a role from table: role
+                // If the WHERE clause is omitted, all records in the table will be deleted.
+                var deleteRole = await db.promise().query("DELETE FROM role WHERE id = ?", [
+                    answer.delete_Role,
+                ]);
+                console.log("Role was deleted from database");
+                init();
+            })
     })
 };
 
@@ -286,46 +290,47 @@ function add_Employee() {
             }));
             // Push "None" as a choice into arrayManager
             arrayManager.push({
-                name: "None", 
+                name: "None",
                 value: undefined
-        });
-        // inquirer prompts for taking in first name, last name, role, and manager for employee
-        inquirer.prompt ([
-            {
-                type: "input",
-                message: "What is the employee's first name?",
-                name: "role_firstName"
-            },
-            {
-                type: "input",
-                message: "What is the employee's last name?",
-                name: "role_lastName"
-            },
-            {
-                type: "list",
-                message: "What is the employee's role?",
-                name: "employee_role",
-                choices: arrayRole,
-            },
-            {
-                type: "list",
-                message: "Who is the employee's manager?",
-                name: "employee_manager",
-                choices: arrayManager,
-            },
-        ])
-        .then (async (answer) => {
-            // query for adding an employee with first name, last name, role, and manager into table: employee
-            var employeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
-               first_name: answer.role_firstName,
-               last_name: answer.role_lastName,
-               role_id: answer.employee_role,
-               manager_id: answer.employee_manager,
             });
-            console.log('Employee added to database');
-            init();
+            // inquirer prompts for taking in first name, last name, role, and manager for employee
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What is the employee's first name?",
+                    name: "role_firstName"
+                },
+                {
+                    type: "input",
+                    message: "What is the employee's last name?",
+                    name: "role_lastName"
+                },
+                {
+                    type: "list",
+                    message: "What is the employee's role?",
+                    name: "employee_role",
+                    choices: arrayRole,
+                },
+                {
+                    type: "list",
+                    message: "Who is the employee's manager?",
+                    name: "employee_manager",
+                    choices: arrayManager,
+                },
+            ])
+                .then(async (answer) => {
+                    // query for adding an employee with first name, last name, role, and manager into table: employee
+                    var employeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
+                        first_name: answer.role_firstName,
+                        last_name: answer.role_lastName,
+                        role_id: answer.employee_role,
+                        manager_id: answer.employee_manager,
+                    });
+                    console.log('Employee added to database');
+                    init();
+                })
         })
-    })})
+    })
 };
 
 // Delete Employee
@@ -337,7 +342,7 @@ function delete_Employee() {
             value: employee.id,
             name: `${employee.first_name} ${employee.last_name}`
         }));
-        inquirer.prompt ([
+        inquirer.prompt([
             {
                 type: "list",
                 message: "Which employee would you like to delete?",
@@ -345,15 +350,15 @@ function delete_Employee() {
                 choices: arrayDeleteEmployee,
             },
         ])
-        .then (async(answer) => {
-            // query for deleting an employee from table: employee
-            // If the WHERE clause is omitted, all records in the table will be deleted.
-            var deleteEmployee = await db.promise().query("DELETE FROM employee WHERE id = ?", [
-                answer.delete_Employee,
-            ]);
-            console.log("Employee was deleted from database");
-            init();
-        })
+            .then(async (answer) => {
+                // query for deleting an employee from table: employee
+                // If the WHERE clause is omitted, all records in the table will be deleted.
+                var deleteEmployee = await db.promise().query("DELETE FROM employee WHERE id = ?", [
+                    answer.delete_Employee,
+                ]);
+                console.log("Employee was deleted from database");
+                init();
+            })
     })
 };
 
@@ -377,33 +382,88 @@ function update_employeeRole() {
                 value: role.id,
                 name: `${role.title}`
             }));
-        inquirer.prompt ([
-            {
-                type: "list",
-                message: "Which employee's role do you want to update?",
-                name: "update_Employee",
-                choices: arrayUpdateEmployee,
-            },
-            {
-                type: "list",
-                message: "Which role do you want to assign the selected employee?",
-                name: "update_RoleForEmployee",
-                choices: arrayUpdateRole,
-            },
-        ])
-        .then (async (answer) => {
-            // query for updating a role for an employee into table: employee.
-            // The UPDATE statement is used to modify the existing records in a table.
-            // The WHERE clause is used to extract only those records that fulfill a specified condition.
-            // If the WHERE clause is omitted, all records in the table will be updated.
-            var employeeUpdate = await db.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [
-                answer.update_RoleForEmployee,
-                answer.update_Employee,                
-                ]);
-            console.log("Updated employee's role");
-            init();
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Which employee's role do you want to update?",
+                    name: "update_Employee",
+                    choices: arrayUpdateEmployee,
+                },
+                {
+                    type: "list",
+                    message: "Which role do you want to assign the selected employee?",
+                    name: "update_RoleForEmployee",
+                    choices: arrayUpdateRole,
+                },
+            ])
+                .then(async (answer) => {
+                    // query for updating a role for an employee into table: employee.
+                    // The UPDATE statement is used to modify the existing records in a table.
+                    // The WHERE clause is used to extract only those records that fulfill a specified condition.
+                    // If the WHERE clause is omitted, all records in the table will be updated.
+                    var employeeUpdate = await db.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [
+                        answer.update_RoleForEmployee,
+                        answer.update_Employee,
+                    ]);
+                    console.log("Updated employee's role");
+                    init();
+                })
         })
-    })})
+    })
+};
+
+// Update employee managers
+function update_employeeManagers() {
+    const query = "SELECT * FROM employee";
+    db.query(query, (err, res) => {
+        if (err) throw err;
+        // Choices for employee update are mapped with the id, first name, and last name into an array for user
+        const arrayEmployee = res.map((employee) => ({
+            value: employee.id,
+            // first name and last name are split into 2 template literals for displaying full name to user
+            name: `${employee.first_name} ${employee.last_name}`
+        }));
+        const query = "SELECT * FROM employee";
+        db.query(query, (err, res) => {
+            if (err) throw err;
+            // Choices for manager update are mapped with the id, first name, and last name into an array for user
+            const arrayManager = res.map((employee) => ({
+                value: employee.id,
+                name: `${employee.first_name} ${employee.last_name}`
+            }));
+            // Push "None" as a choice into arrayManager
+            arrayManager.push({
+                name: "None",
+                value: undefined
+            });
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Which employee do you want to update?",
+                    name: "update_Employee",
+                    choices: arrayEmployee,
+                },
+                {
+                    type: "list",
+                    message: "Which manager do you want to assign the selected employee?",
+                    name: "update_Manager",
+                    choices: arrayManager,
+                },
+            ])
+                .then(async (answer) => {
+                    // query for updating a manager for an employee into table: employee.
+                    // The UPDATE statement is used to modify the existing records in a table.
+                    // The WHERE clause is used to extract only those records that fulfill a specified condition.
+                    // If the WHERE clause is omitted, all records in the table will be updated.
+                    var employeeUpdateManager = await db.promise().query("UPDATE employee SET manager_id = ? WHERE id = ?", [
+                        answer.update_Manager,
+                        answer.update_Employee,
+                    ]);
+                    console.log("Updated employee's manager");
+                    init();
+                })
+        })
+    })
 };
 
 // Call to initialize the app
