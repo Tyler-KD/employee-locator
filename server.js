@@ -59,6 +59,8 @@ function init() {
                 "Delete a Role",
                 "View All Employees",
                 "View All Employees by Manager",
+                "View All Employees by Department",
+                "View All Department Budgets",
                 "Add Employee",
                 "Delete Employee",
                 "Update Employee Role",
@@ -81,8 +83,14 @@ function init() {
                 case "View All Employees":
                     view_Employees();
                     break;
-                case "View All Emplyees by Manager":
+                case "View All Employees by Manager":
                     view_EmployeesByManager();
+                    break;
+                case "View All Employees by Department":
+                    view_EmployeesByDepartment();
+                    break;
+                case "View All Department Budgets":
+                    view_DepartmentBudgets();
                     break;
                 case "Add Department":
                     add_Department();
@@ -155,6 +163,22 @@ function view_EmployeesByManager() {
     })
 };
 
+// View all employees by department
+function view_EmployeesByDepartment() {
+    db.query(queries[4], function (err, queries) {
+        console.table(queries);
+        init();
+    })
+};
+
+// View all department budgets
+function view_DepartmentBudgets() {
+    db.query(queries[5], function (err, queries) {
+        console.table(queries);
+        init();
+    })
+};
+
 // Add Department
 function add_Department() {
     inquirer.prompt([
@@ -166,7 +190,7 @@ function add_Department() {
     ])
         .then(async (answer) => {
             // INSERT INTO statement is used to insert new records in a table
-            var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer);
+            var departmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer);
             console.log("Department added to database");
             // console.log(DepartmentAdd);
             init();

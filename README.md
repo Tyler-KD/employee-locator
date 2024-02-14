@@ -61,7 +61,11 @@ N/A
 
 [MySQL ON DELETE CASCADE](https://www.geeksforgeeks.org/mysql-on-delete-cascade-constraint/)
 
-[]()
+[SQL ORDER BY](https://www.w3schools.com/sql/sql_ref_order_by.asp)
+
+[SQL SUM() Function](https://www.w3schools.com/SQl/sql_sum.asp)
+
+[SQL GROUP BY Statement](https://www.w3schools.com/sql/sql_groupby.asp)
 
 
 
