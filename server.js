@@ -56,6 +56,7 @@ function init() {
                 "Delete Department",
                 "View All Roles",
                 "Add a Role",
+                "Delete a Role",
                 "View All Employees",
                 "Add Employee",
                 "Update Employee Role",
@@ -88,6 +89,9 @@ function init() {
                     break;
                 case "Add a Role":
                     add_Role();
+                    break;
+                case "Delete a Role":
+                    delete_Role();
                     break;
                 case "Update Employee Role":
                     update_employeeRole();
@@ -158,7 +162,7 @@ function delete_Department() {
         const arrayDeleteDepartment = res.map((departments) => ({
             value: departments.id,
             name: `${departments.department}`
-        }));
+        }));        
         inquirer.prompt ([
             {
                 type: "list",
@@ -168,6 +172,10 @@ function delete_Department() {
             },            
         ])
         .then(async (answer) => {
+            // query for deleting a department from table: departments.
+            // The DELETE statement is used to delete existing records in a table.
+            // The WHERE clause specifies which records should be deleted.
+            // If the WHERE clause is omitted, all records in the table will be deleted.
             var deleteDepartment = await db.promise().query("DELETE FROM departments WHERE id = ?", [
                 answer.delete_Department,
             ]);
@@ -221,6 +229,33 @@ function add_Role() {
         })
     })
 
+};
+
+// Delete a Role
+function delete_Role() {
+    const query = "SELECT * FROM role";
+    db.query(query, (err, res) => {
+        if (err) throw err;
+        const arrayDeleteRole = res.map((role) => ({
+            value: role.id,
+            name: `${role.title}`
+        }));
+        inquirer.prompt ([
+            {
+                type: "list",
+                message: "Which role would you like to delete?",
+                name: "delete_Role",
+                choices: arrayDeleteRole,
+            },
+        ])
+        .then(async (answer) => {
+            var deleteRole = await db.promise().query("DELETE FROM role WHERE id = ?", [
+                answer.delete_Role,
+            ]);
+            console.log("Role was deleted from database");
+            init();
+        })
+    })
 };
 
 // Add an Employee
@@ -325,6 +360,7 @@ function update_employeeRole() {
             // query for updating a role for an employee into table: employee.
             // The UPDATE statement is used to modify the existing records in a table.
             // The WHERE clause is used to extract only those records that fulfill a specified condition.
+            // If the WHERE clause is omitted, all records in the table will be updated.
             var employeeUpdate = await db.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [
                 answer.update_RoleForEmployee,
                 answer.update_Employee,                
