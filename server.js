@@ -137,6 +137,7 @@ function add_Department() {
         }
     ])
     .then(async (answer) => {
+        // INSERT INTO statement is used to insert new records in a table
         var DepartmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer); 
         console.log("Department added to database");
         // console.log(DepartmentAdd);
@@ -176,7 +177,7 @@ function add_Role() {
             },
         ])
         .then(async (answer) => {
-            // query for adding a role with title, salary, and department name into table role
+            // query for adding a role with title, salary, and department name into table: role
             var roleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
                 title: answer.role_title,
                 salary: answer.role_salary,
@@ -241,7 +242,7 @@ function add_Employee() {
             },
         ])
         .then (async (answer) => {
-            // query for adding an employee with first name, last name, role, and manager into table employee
+            // query for adding an employee with first name, last name, role, and manager into table: employee
             var employeeAdd = await db.promise().query("INSERT INTO employee SET ?", {
                first_name: answer.role_firstName,
                last_name: answer.role_lastName,
@@ -289,10 +290,13 @@ function update_employeeRole() {
             },
         ])
         .then (async (answer) => {
-            var employeeUpdate = await db.promise().query("Update employee SET ?", {
-                id: answer.update_Employee,
-                role_id: answer.update_RoleForEmployee,
-            });
+            // query for updating a role for an employee into table: employee.
+            // The UPDATE statement is used to modify the existing records in a table.
+            // The WHERE clause is used to extract only those records that fulfill a specified condition.
+            var employeeUpdate = await db.promise().query("Update employee SET role_id = ? WHERE id = ?", [
+                answer.update_RoleForEmployee,
+                answer.update_Employee,                
+                ]);
             console.log("Updated employee's role");
             init();
         })
