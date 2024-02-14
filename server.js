@@ -59,6 +59,7 @@ function init() {
                 "Delete a Role",
                 "View All Employees",
                 "Add Employee",
+                "Delete Employee",
                 "Update Employee Role",
                 "Quit",
             ]
@@ -86,6 +87,9 @@ function init() {
                     break;
                 case "Add Employee":
                     add_Employee();
+                    break;
+                case "Delete Employee":
+                    delete_Employee();
                     break;
                 case "Add a Role":
                     add_Role();
@@ -238,7 +242,7 @@ function delete_Role() {
         if (err) throw err;
         const arrayDeleteRole = res.map((role) => ({
             value: role.id,
-            name: `${role.title}`
+            name: `${role.title}`,
         }));
         inquirer.prompt ([
             {
@@ -249,6 +253,8 @@ function delete_Role() {
             },
         ])
         .then(async (answer) => {
+            // query for deleting a role from table: role
+            // If the WHERE clause is omitted, all records in the table will be deleted.
             var deleteRole = await db.promise().query("DELETE FROM role WHERE id = ?", [
                 answer.delete_Role,
             ]);
@@ -320,6 +326,35 @@ function add_Employee() {
             init();
         })
     })})
+};
+
+// Delete Employee
+function delete_Employee() {
+    const query = "SELECT * FROM employee";
+    db.query(query, (err, res) => {
+        if (err) throw err;
+        const arrayDeleteEmployee = res.map((employee) => ({
+            value: employee.id,
+            name: `${employee.first_name} ${employee.last_name}`
+        }));
+        inquirer.prompt ([
+            {
+                type: "list",
+                message: "Which employee would you like to delete?",
+                name: "delete_Employee",
+                choices: arrayDeleteEmployee,
+            },
+        ])
+        .then (async(answer) => {
+            // query for deleting an employee from table: employee
+            // If the WHERE clause is omitted, all records in the table will be deleted.
+            var deleteEmployee = await db.promise().query("DELETE FROM employee WHERE id = ?", [
+                answer.delete_Employee,
+            ]);
+            console.log("Employee was deleted from database");
+            init();
+        })
+    })
 };
 
 // Update an employee role

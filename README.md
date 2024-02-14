@@ -55,6 +55,12 @@ N/A
 
 [MySQL CONCAT() Function](https://www.w3schools.com/sql/func_mysql_concat.asp)
 
+[SQL WHERE CLAUSE](https://www.w3schools.com/SQl/sql_where.asp)
+
+[SQL Constraints](https://www.w3schools.com/sql/sql_constraints.asp)
+
+[MySQL ON DELETE CASCADE](https://www.geeksforgeeks.org/mysql-on-delete-cascade-constraint/)
+
 []()
 
 

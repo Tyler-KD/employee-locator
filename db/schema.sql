@@ -22,10 +22,15 @@ CREATE TABLE role (
     title VARCHAR(30) NOT NULL,
     salary DECIMAL,
     department_id INT,
+    -- CONSTRAINTS are used to limit the type of data that can go into a table
+    -- Lifts FOREIGN KEY prevention of actions that would destroy links between tables
+    -- FOREIGN KEY (department_id) is lifted
+    CONSTRAINT fk_departments
     FOREIGN KEY (department_id)
     REFERENCES departments(id)
-    -- If department gets deleted, then that id will be set to null
-    ON DELETE SET NULL
+    -- ON DELETE CASCADE constraint is used in MySQL to delete rows from the child table automatically, 
+    -- when the rows from the parent table are deleted
+    ON DELETE CASCADE
 );
 
 -- Creates the table "employee" within employeeLocator_db
@@ -34,11 +39,17 @@ CREATE TABLE employee (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT,
+    -- FOREIGN KEY (role_id) is lifted
+    CONSTRAINT fk_role
     FOREIGN KEY (role_id)
-    REFERENCES role(id),
+    REFERENCES role(id)
+    ON DELETE CASCADE,
     manager_id INT,
+    -- FOREIGN KEY (manager_id) is lifted
+    CONSTRAINT fk_manager
     FOREIGN KEY (manager_id)
     REFERENCES employee(id)
+    -- If employee gets deleted, then that id will be set to null
     ON DELETE SET NULL
 );
 
