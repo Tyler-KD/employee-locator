@@ -19,7 +19,8 @@ VALUES  ("Owner", 1000000000, 2),
         ("Teacher", 60000, 3),
         ("TV Show Host", 140000, 4),
         ("Personal Assistant", 100000, 2),
-        ("Jazz Player", 90000, 5);
+        ("Jazz Player", 90000, 5),
+        ("Sidekick", 70000, 4);
 
 -- Insert rows into employee table
 INSERT INTO employee(first_name, last_name, role_id, manager_id)

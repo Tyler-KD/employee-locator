@@ -21,6 +21,23 @@ const queries = queriesContent.split(';').map(query => query.trim());
 // Imports console.table
 const cTable = require('console.table');
 
+const cfonts = require('cfonts');
+
+cfonts.say('Employee Locator', {
+    font: 'pallet',
+    align: 'left',
+    colors: ['greenBright', 'gray'],
+    background: 'transparent',
+    letterSpacing: 1,
+    lineHeight: 1,
+    space: true,
+    maxLength: '0',
+    gradient: false,
+    indpendentGradient: false,
+    transitionGradient: false,
+    env: 'node'
+});
+
 // Specify which port the Express.js server will run.
 // process.env.PORT stores the port number on which a web server should listen for incoming connections.
 const PORT = process.env.PORT || 3001;
@@ -191,8 +208,7 @@ function add_Department() {
         .then(async (answer) => {
             // INSERT INTO statement is used to insert new records in a table
             var departmentAdd = await db.promise().query("INSERT INTO departments SET ?", answer);
-            console.log("Department added to database");
-            // console.log(DepartmentAdd);
+            console.log(`${answer.department} added to the database`);
             init();
         })
 };
@@ -223,7 +239,7 @@ function delete_Department() {
                 var deleteDepartment = await db.promise().query("DELETE FROM departments WHERE id = ?", [
                     answer.delete_Department,
                 ]);
-                console.log("Department deleted from database");
+                console.log(`Department ID: ${answer.delete_Department} deleted from database`);
                 init();
             })
     })
@@ -256,7 +272,7 @@ function add_Role() {
             {
                 type: "list",
                 message: "Which department does the role belong to?",
-                name: "department",
+                name: "department_Name",
                 choices: arrayDepartment,
             },
         ])
@@ -267,7 +283,7 @@ function add_Role() {
                     salary: answer.role_salary,
                     department_id: answer.department,
                 });
-                console.log(`Role added to database`);
+                console.log(`Role: ${answer.role_title} added to database`);
                 // console.log(RoleDepartmentAdd);
                 init();
             })
@@ -298,7 +314,7 @@ function delete_Role() {
                 var deleteRole = await db.promise().query("DELETE FROM role WHERE id = ?", [
                     answer.delete_Role,
                 ]);
-                console.log("Role was deleted from database");
+                console.log(`Role ID: ${answer.delete_Role} was deleted from database`);
                 init();
             })
     })
@@ -362,7 +378,7 @@ function add_Employee() {
                         role_id: answer.employee_role,
                         manager_id: answer.employee_manager,
                     });
-                    console.log('Employee added to database');
+                    console.log(`Employee: ${answer.role_firstName} ${answer.role_lastName} added to database`);
                     init();
                 })
         })
@@ -392,7 +408,7 @@ function delete_Employee() {
                 var deleteEmployee = await db.promise().query("DELETE FROM employee WHERE id = ?", [
                     answer.delete_Employee,
                 ]);
-                console.log("Employee was deleted from database");
+                console.log(`Employee ID: ${answer.delete_Employee} was deleted from database`);
                 init();
             })
     })
