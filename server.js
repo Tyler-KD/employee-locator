@@ -281,7 +281,7 @@ function add_Role() {
                 var roleDepartmentAdd = await db.promise().query("INSERT INTO role SET ?", {
                     title: answer.role_title,
                     salary: answer.role_salary,
-                    department_id: answer.department,
+                    department_id: answer.department_Name,
                 });
                 console.log(`Role: ${answer.role_title} added to database`);
                 // console.log(RoleDepartmentAdd);
