@@ -109,7 +109,7 @@ N/A
 
 ## Features
 
-Node.js, npm (node package manager), express.js 4.18.2, inquirer 8.2.4, MySQL2 3.9.1, fs (File System), path module, console.table 0,10,0, cfonts 3.2.0
+Node.js, npm (node package manager), express.js 4.18.2, inquirer 8.2.4, MySQL2 3.9.1, fs (File System), path module, console.table 0.10.0, cfonts 3.2.0
 
 ## Questions
 
